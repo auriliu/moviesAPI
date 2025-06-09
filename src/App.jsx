@@ -8,16 +8,17 @@ import Movies from "./components/Movies";
 import MovieDetails from "./components/MovieDetails";
 import Series from "./components/Series";
 import SerieDetails from "./components/SerieDetails";
-import Search from "./components/Search";
 
-import SearchTest from "./components/SearchTest";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedComponent from "./components/ProtectedComponent";
+import Login from "./components/Login";
 
 function App() {
+  const isLoggedIn = false; //contextAPI to store it.
+
   return (
     <>
-      <header>
-        <Navbar />
-      </header>
+      <Navbar />
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -27,8 +28,19 @@ function App() {
         <Route path="/series" element={<Series />} />
         <Route path="/series/:id" element={<SerieDetails />} />
 
-        {/* <Route path="/search" element={<Search />} /> */}
-        <Route path="/search" element={<SearchTest />} />
+        {/* {isLoggedIn && <Route path="/search" element={<ProtectedComponent />} />}
+        {!isLoggedIn && <Route path="/search" element={<Login />} />} */}
+
+        <Route
+          path="/search"
+          element={
+            <ProtectedRoute isAuth={isLoggedIn}>
+              <ProtectedComponent />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   );
@@ -37,10 +49,4 @@ function App() {
 
 export default App;
 
-// params
-// pages + routes / ids
-// how to read params.
 // https://reactrouter.com/start/declarative/installation
-
-// git repo for this project.
-// share it with.

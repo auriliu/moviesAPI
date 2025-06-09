@@ -13,17 +13,29 @@ export default function Movies() {
     setSearchParams({ page });
   }, [page, setSearchParams]);
 
+  // const genres = useFetch(
+  //   `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`
+  // );
+  // console.log(genres);
+
   const { data, loading, error } = useFetch(
     `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&page=${page}`
   );
 
+  console.log(data.results);
+
   if (loading) return <p>loading...</p>;
   if (error) return <p>error: {error}</p>;
-  if (!data?.results?.length) return <p>no results</p>;
+  // if (!data?.results?.length) return <p>no results</p>;
+  // when loading: shows no results instead of loading...
+
+  // a SKELETON component for images: spinners when loading images.
+  // libs like shadcn.
 
   return (
     <div>
       <div className="movies-container">
+        {data.results.length == 0 && <p>no results</p>}
         {data.results.map((movie) => (
           <Link to={`/movies/${movie.id}`} key={movie.id}>
             <div className="movie-card">
@@ -42,7 +54,7 @@ export default function Movies() {
       </div>
 
       {/* pagination */}
-      <div>
+      <div className="pagination-container">
         <button
           onClick={() => {
             setPage((prev) => prev - 1);
@@ -67,52 +79,6 @@ export default function Movies() {
     </div>
   );
 }
-
-// data && data.results && data.results.length > 0 is a way to safely check if the data exists before trying to access deeper properties.
-
-// first, it checks if data is not null or undefined.
-
-// then it checks if data.results exists (also not null or undefined).
-
-// finally, it checks if data.results.length is greater than 0, meaning the array has at least one item.
-
-// if all three conditions are true, hasResults will be true; otherwise, it will be false.
-
-// this prevents errors like "cannot read property 'results' of undefined" when data is not yet loaded.
-
-// ELIMINATE THAT hasResults part:
-// const [posts, setPosts] = useState([]);
-
-// useEffect(() => {
-//   if (data && data.results && data.results.length > 0) {
-//     setPosts(data.results);
-//   }
-// }, [data]);
-
-// in render:
-// return (
-//   <div>
-//     {posts.length === 0 ? (
-//       <p>no posts yet</p>
-//     ) : (
-//       posts.map(post => <div key={post.id}>{post.title}</div>)
-//     )}
-//   </div>
-// );
-
-// GPT: is there a way to eliminate this altogether?   const hasResults = data && data.results && data.results.length > 0;
-
-// with a useEffect of something else?
-
-//
-// - fetch movies.
-//   - render movies grid.
-//   - with movie card: whats in it?
-//     - title
-//     - overview (description)
-//     - vote_average
-//     - poster_path
-//     - release_date
 
 // if (!data?.results?.length) return <p>no results</p>;
 // – if data is not null or undefined, return data.results

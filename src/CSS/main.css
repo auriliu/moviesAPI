@@ -30,6 +30,15 @@ nav a:hover {
   text-decoration: underline;
 }
 
+/* .navbar {
+  position: fixed;
+  background-color: aliceblue;
+  z-index: 999;
+  width: 100%;
+  top: 0;
+  left: 0;
+} */
+
 .movies-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -64,4 +73,8 @@ nav a:hover {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 2rem;
+}
+
+.pagination-container {
+  padding: 2rem;
 }
