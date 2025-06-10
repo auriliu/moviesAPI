@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router";
 import useFetch from "../hooks/useFetch";
 
 const API_KEY = "09d16205c5c756953a18abf4f53af424";
@@ -18,21 +18,27 @@ export default function MovieDetails() {
   return (
     <div className="movie-container">
       <div className="movie-poster">
-        <h1>{data.title}</h1>
+        <h1>{data.title || "no title available"}</h1>
 
-        <img
-          src={`https://image.tmdb.org/t/p/w300${data.poster_path}`}
-          alt={`${data.title} poster`}
-        />
+        {data.poster_path && (
+          <img
+            src={`https://image.tmdb.org/t/p/w300${data.poster_path}`}
+            alt={`${data.title || "no title"} poster`}
+          />
+        )}
       </div>
       <div className="movie-text">
-        <p>{data.overview}</p>
-        <p>release date: {data.release_date}</p>
-        <p>runtime: {data.runtime} minutes</p>
+        <p>{data.overview || "no overview available"}</p>
+        <p>release date: {data.release_date || "unknown"}</p>
         <p>
-          rating: {data.vote_average} ({data.vote_count} votes)
+          runtime:
+          {data.runtime ? `${data.runtime} minutes` : "runtime unknown"}
         </p>
-        <p>status: {data.status}</p>
+        <p>
+          rating: {data.vote_average || "unknown"} (
+          {data.vote_count || "unknown"} votes)
+        </p>
+        <p>status: {data.status || "unknown"}</p>
         <button onClick={() => navigate(-1)}>back to all movies</button>
       </div>
     </div>

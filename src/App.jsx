@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router";
 
 import { Navbar } from "./components/Navbar";
 
@@ -15,6 +15,8 @@ import Login from "./components/Login";
 
 function App() {
   const isLoggedIn = false; //contextAPI to store it.
+  // roles, id, user profile and user name.
+  // save the whole user object.
 
   return (
     <>
@@ -27,9 +29,6 @@ function App() {
 
         <Route path="/series" element={<Series />} />
         <Route path="/series/:id" element={<SerieDetails />} />
-
-        {/* {isLoggedIn && <Route path="/search" element={<ProtectedComponent />} />}
-        {!isLoggedIn && <Route path="/search" element={<Login />} />} */}
 
         <Route
           path="/search"

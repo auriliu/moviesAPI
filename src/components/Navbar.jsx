@@ -1,8 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 
 export function Navbar() {
   return (
-    <div className="navbar">
+    <header className="navbar">
       <nav>
         <ul>
           <li>
@@ -19,6 +19,6 @@ export function Navbar() {
           </li>
         </ul>
       </nav>
-    </div>
+    </header>
   );
 }

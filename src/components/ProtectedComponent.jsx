@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();

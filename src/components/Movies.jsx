@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 const API_KEY = "09d16205c5c756953a18abf4f53af424";
 
 import useFetch from "../hooks/useFetch";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router";
 
 export default function Movies() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,6 +21,8 @@ export default function Movies() {
   const { data, loading, error } = useFetch(
     `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&page=${page}`
   );
+  // use it in a bearer. (1)
+  // inside fetch.
 
   console.log(data.results);
 
@@ -40,18 +42,25 @@ export default function Movies() {
           <Link to={`/movies/${movie.id}`} key={movie.id}>
             <div className="movie-card">
               <img
-                src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                alt={`${movie.title} poster`}
+                src={
+                  movie.poster_path &&
+                  `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                }
+                alt={`${movie.title || "no title"} poster`}
               />
-              <p>{movie.title}</p>
-              {/* <p>{movie.overview}</p> */}
-              {/* d be expandable text */}
-              <p>{movie.vote_average}</p>
-              <p>{movie.release_date}</p>
+              <p>{movie.title || "no title available"}</p>
+              <p>{movie.vote_average ?? "no rating"}</p>
+              <p>{movie.release_date || "no release date"}</p>
             </div>
           </Link>
         ))}
       </div>
+
+      {/* || vs ?? */}
+      {/* ?? checks for null or undefined.
+|| checks for falsy values like 0, '', false, null, undefined.
+
+use ?? to keep valid falsy values like 0. */}
 
       {/* pagination */}
       <div className="pagination-container">
