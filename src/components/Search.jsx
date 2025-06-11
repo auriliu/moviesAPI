@@ -1,31 +1,28 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
+import useFetch from "../hooks/useFetch";
 
 const API_KEY = "09d16205c5c756953a18abf4f53af424";
 
 export default function Search() {
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("q") || "";
 
   const [input, setInput] = useState(query);
+  const pageFromParams = Number(searchParams.get("page") || 1);
+  const [page, setPage] = useState(pageFromParams);
+
+  const { data, loading, error } = useFetch(
+    `https://api.themoviedb.org/3/search/movie?query=${query}&api_key=${API_KEY}&page=${page}`
+  );
+  // input — to control what the user types in real-time
+  // query — to represent the submitted search query synced with the URL and the actual search results
 
   function handleSubmit(e) {
     e.preventDefault();
     setSearchParams({ q: input });
-
-    setIsLoading(true);
-    fetch(
-      `https://api.themoviedb.org/3/search/movie?query=${input}&api_key=${API_KEY}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setMovies(data.results);
-        setIsLoading(false);
-      })
-      .catch((error) => console.log(error));
+    setPage(1);
+    setInput("");
   }
 
   return (
@@ -33,32 +30,63 @@ export default function Search() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="search..."
+          placeholder="title..."
           value={input}
           onChange={(e) => {
             setInput(e.target.value);
           }}
         />
-        {/* <button>search</button> */}
+        <button>search</button>
       </form>
 
-      {isLoading && <p>loading...</p>}
-      {!isLoading && movies.length > 0 && (
+      {loading && <p>loading...</p>}
+      {!loading && !error && data.results.length > 0 && (
         <div className="search-container">
-          {movies.map((movie) => {
+          {data.results.map((movie) => {
             return (
-              <div key={movie.id}>
-                <p>{movie.title}</p>
-                <img
-                  src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                  alt={`${movie.title} poster`}
-                  width="100px"
-                />
-              </div>
+              <Link to={`/search/${movie.id}`} key={movie.id}>
+                <div className="movie-container">
+                  <div className="movie-poster">
+                    <h3>{movie.title || "no title available"}</h3>
+
+                    {movie.poster_path && (
+                      <img
+                        src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                        alt={`${movie.title || "no title"} poster`}
+                      />
+                    )}
+                    {!movie.poster_path && <p>movie poster not available</p>}
+                  </div>
+                </div>
+              </Link>
             );
           })}
         </div>
       )}
+
+      {/* pagination */}
+      <div className="pagination-container">
+        <button
+          onClick={() => {
+            setPage((prev) => prev - 1);
+            window.scrollTo(0, 0);
+          }}
+          disabled={page == 1}
+        >
+          prev
+        </button>
+        <span>page: {page}</span>
+        <button
+          onClick={() => {
+            setPage((prev) => prev + 1);
+            window.scrollTo(0, 0);
+          }}
+          disabled={page == data?.total_pages}
+        >
+          next
+        </button>
+      </div>
+      {/* pagination */}
     </>
   );
 }

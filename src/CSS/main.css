@@ -60,10 +60,26 @@ nav a:hover {
 
 .search-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  /* gap: 1rem; */
+  text-align: center;
 }
 
 .pagination-container {
   padding: 2rem;
+}
+
+.search-container .movie-container {
+  max-width: 200px;
+  min-height: 400px;
+  border: 1px solid red;
+}
+
+.search-container img {
+  width: 200px;
+  /* height: 400px; */
+}
+
+form {
+  padding: 2rem 0;
 }

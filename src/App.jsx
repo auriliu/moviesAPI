@@ -13,6 +13,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedComponent from "./components/ProtectedComponent";
 import Login from "./components/Login";
 
+import Search from "./components/Search";
+
 function App() {
   const isLoggedIn = false; //contextAPI to store it.
   // roles, id, user profile and user name.
@@ -29,6 +31,9 @@ function App() {
 
         <Route path="/series" element={<Series />} />
         <Route path="/series/:id" element={<SerieDetails />} />
+
+        <Route path="/search" element={<Search />} />
+        <Route path="/search/:id" element={<MovieDetails />} />
 
         <Route
           path="/search"
