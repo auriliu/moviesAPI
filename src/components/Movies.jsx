@@ -8,37 +8,101 @@ export default function Movies() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
 
-  // useEffect keeps url in sync with page state
+  const [query, setQuery] = useState("popular"); // "popular, top_rated, upcoming"
+  // when to lift state up to the url:
+  // You want users to be able to share the page with current filters (?query=top_rated&page=3).
+  // You want the Back/Forward buttons to reflect navigation (i.e., going back to "popular").
+  // You want to persist state on refresh.
+
+  const [genreID, setGenreID] = useState("");
+
+  const {
+    data: moviesData,
+    loading: moviesLoading,
+    error: moviesError,
+  } = useFetch(
+    `https://api.themoviedb.org/3/movie/${query}?api_key=${API_KEY}&page=${page}`
+  );
+
   useEffect(() => {
     setSearchParams({ page });
   }, [page, setSearchParams]);
 
-  // const genres = useFetch(
-  //   `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`
-  // );
-  // console.log(genres);
-
-  const { data, loading, error } = useFetch(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&page=${page}`
+  const {
+    data: genresData,
+    loading: genresLoading,
+    error: genresError,
+  } = useFetch(
+    `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`
   );
-  // use it in a bearer. (1)
-  // inside fetch.
 
-  console.log(data.results);
+  const { data: filteredData } = useFetch(
+    `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreID}`
+  );
 
-  if (loading) return <p>loading...</p>;
-  if (error) return <p>error: {error}</p>;
-  // if (!data?.results?.length) return <p>no results</p>;
-  // when loading: shows no results instead of loading...
+  if (moviesLoading) return <p>loading...</p>;
+  if (moviesError) return <p>error: {moviesError}</p>;
 
-  // a SKELETON component for images: spinners when loading images.
-  // libs like shadcn.
+  if (genresLoading) return <p>loading...</p>;
+  if (genresError) return <p>error: {genresError}</p>;
+
+  const moviesToRender =
+    genreID === "" ? moviesData.results : filteredData.results;
 
   return (
     <div>
+      <div className="movies-filters">
+        <span>MOVIES:</span>
+        <br />
+        <br />
+
+        <button
+          onClick={() => {
+            setGenreID("");
+            setPage(1);
+            setQuery("popular");
+          }}
+        >
+          popular
+        </button>
+        <button
+          onClick={() => {
+            setGenreID("");
+            setPage(1);
+            setQuery("top_rated");
+          }}
+        >
+          top-rated
+        </button>
+        <button
+          onClick={() => {
+            setGenreID("");
+            setPage(1);
+            setQuery("upcoming");
+          }}
+        >
+          upcoming
+        </button>
+        <br />
+        <br />
+        {genresData.genres.length == 0 && <p>no results</p>}
+
+        {genresData.genres.map((i) => (
+          <button
+            key={i.id}
+            onClick={() => {
+              setPage(1);
+              setGenreID(i.id);
+            }}
+          >
+            {i.name}
+          </button>
+        ))}
+      </div>
+
       <div className="movies-container">
-        {data.results.length == 0 && <p>no results</p>}
-        {data.results.map((movie) => (
+        {moviesToRender.length == 0 && <p>no results</p>}
+        {moviesToRender.map((movie) => (
           <Link to={`/movies/${movie.id}`} key={movie.id}>
             <div className="movie-card">
               <img
@@ -49,18 +113,12 @@ export default function Movies() {
                 alt={`${movie.title || "no title"} poster`}
               />
               <p>{movie.title || "no title available"}</p>
-              <p>{movie.vote_average ?? "no rating"}</p>
+              <p>{movie.vote_average || "no rating"}</p>
               <p>{movie.release_date || "no release date"}</p>
             </div>
           </Link>
         ))}
       </div>
-
-      {/* || vs ?? */}
-      {/* ?? checks for null or undefined.
-|| checks for falsy values like 0, '', false, null, undefined.
-
-use ?? to keep valid falsy values like 0. */}
 
       {/* pagination */}
       <div className="pagination-container">
@@ -79,7 +137,7 @@ use ?? to keep valid falsy values like 0. */}
             setPage((prev) => prev + 1);
             window.scrollTo(0, 0);
           }}
-          disabled={page == data?.total_pages}
+          disabled={page == moviesData?.total_pages}
         >
           next
         </button>
@@ -88,12 +146,3 @@ use ?? to keep valid falsy values like 0. */}
     </div>
   );
 }
-
-// if (!data?.results?.length) return <p>no results</p>;
-// – if data is not null or undefined, return data.results
-// – else, return undefined without throwing an error
-// prevents runtime crashes from accessing properties on undefined.
-
-//   before fetch completes, data is often undefined or null by default.
-// your component renders immediately, even before the async fetch finishes.
-// so data.results would crash unless guarded by data?.results.

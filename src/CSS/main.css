@@ -80,6 +80,7 @@ nav a:hover {
   /* height: 400px; */
 }
 
-form {
+form,
+.movies-filters {
   padding: 2rem 0;
 }
