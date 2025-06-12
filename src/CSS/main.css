@@ -88,3 +88,7 @@ form,
 .movies-filters .active {
   border: 2px solid red;
 }
+
+.home-buttons {
+  display: inline;
+}
