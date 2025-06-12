@@ -1,14 +1,15 @@
 import { useNavigate, useParams } from "react-router";
-import useFetch from "../hooks/useFetch";
+import useFetch from "../hooks/useFetch_wToken";
 
-const API_KEY = "09d16205c5c756953a18abf4f53af424";
+const token = import.meta.env.VITE_TMDB_API_TOKEN;
 
 export default function MovieDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const { data, loading, error } = useFetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
+    `https://api.themoviedb.org/3/movie/${id}`,
+    token
   );
 
   if (loading) return <p>loading...</p>;

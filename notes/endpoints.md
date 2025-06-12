@@ -18,7 +18,7 @@ search
     /search/movie
     /search/tv
     /search/person
-    /search/keyword
+    /search/keyword // global
 
 genres
 

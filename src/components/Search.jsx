@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import useFetch from "../hooks/useFetch";
+import useFetch from "../hooks/useFetch_wToken";
 
-const API_KEY = "09d16205c5c756953a18abf4f53af424";
+const token = import.meta.env.VITE_TMDB_API_TOKEN;
 
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,11 +14,17 @@ export default function Search() {
   // query — to represent the submitted search query synced with the URL and the actual search results
 
   const { data, loading, error } = useFetch(
-    `https://api.themoviedb.org/3/search/movie?query=${query}&api_key=${API_KEY}&page=${page}`
+    `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}`,
+    token
   );
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (input.length < 3) {
+      alert("input must be at least 3 characters long");
+      return;
+    }
+
     setSearchParams({ query: input, page: "1" });
   }
 

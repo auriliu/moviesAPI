@@ -1,7 +1,7 @@
-const API_KEY = "09d16205c5c756953a18abf4f53af424";
-
-import useFetch from "../hooks/useFetch";
+import useFetch from "../hooks/useFetch_wToken";
 import { Link, useSearchParams } from "react-router";
+
+const token = import.meta.env.VITE_TMDB_API_TOKEN;
 
 export default function Movies() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,19 +15,19 @@ export default function Movies() {
     loading: moviesLoading,
     error: moviesError,
   } = useFetch(
-    `https://api.themoviedb.org/3/movie/${query}?api_key=${API_KEY}&page=${page}`
+    `https://api.themoviedb.org/3/movie/${query}?page=${page}`,
+    token
   );
 
   const {
     data: genresData,
     loading: genresLoading,
     error: genresError,
-  } = useFetch(
-    `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`
-  );
+  } = useFetch(`https://api.themoviedb.org/3/genre/movie/list`, token);
 
   const { data: filteredData } = useFetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreID}&page=${page}`
+    `https://api.themoviedb.org/3/discover/movie?with_genres=${genreID}&page=${page}`,
+    token
   );
 
   if (moviesLoading || genresLoading) return <p>loading...</p>;
@@ -117,14 +117,14 @@ export default function Movies() {
       {/* pagination */}
       <div className="pagination-container">
         <button
-          onClick={() => handleSetParams({ page: page - 1, query: "" })}
+          onClick={() => handleSetParams({ page: page - 1, query })}
           disabled={page === 1}
         >
           prev
         </button>
         <span>page: {page}</span>
         <button
-          onClick={() => handleSetParams({ page: page + 1, query: "" })}
+          onClick={() => handleSetParams({ page: page + 1, query })}
           disabled={
             genreID
               ? page === filteredData?.total_pages
@@ -138,3 +138,5 @@ export default function Movies() {
     </div>
   );
 }
+
+//

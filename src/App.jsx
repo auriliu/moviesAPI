@@ -3,22 +3,19 @@ import { Routes, Route } from "react-router";
 import { Navbar } from "./components/Navbar";
 
 import "./CSS/main.css";
-import Home from "./components/Home";
-import Movies from "./components/Movies";
+import Home from "./pages/Home";
+import Movies from "./pages/Movies";
+import Series from "./pages/Series";
+
 import MovieDetails from "./components/MovieDetails";
-import Series from "./components/Series";
 import SerieDetails from "./components/SerieDetails";
+import Search from "./components/Search";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedComponent from "./components/ProtectedComponent";
-import Login from "./components/Login";
-
-import Search from "./components/Search";
 
 function App() {
   const isLoggedIn = false; //contextAPI to store it.
-  // roles, id, user profile and user name.
-  // save the whole user object.
 
   return (
     <>
@@ -44,8 +41,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   );
