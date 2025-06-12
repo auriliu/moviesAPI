@@ -6,23 +6,20 @@ const API_KEY = "09d16205c5c756953a18abf4f53af424";
 
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get("q") || "";
+  const query = searchParams.get("query") || "";
 
   const [input, setInput] = useState(query);
-  const pageFromParams = Number(searchParams.get("page") || 1);
-  const [page, setPage] = useState(pageFromParams);
+  const page = Number(searchParams.get("page") || 1);
+  // input — to control what the user types in real-time
+  // query — to represent the submitted search query synced with the URL and the actual search results
 
   const { data, loading, error } = useFetch(
     `https://api.themoviedb.org/3/search/movie?query=${query}&api_key=${API_KEY}&page=${page}`
   );
-  // input — to control what the user types in real-time
-  // query — to represent the submitted search query synced with the URL and the actual search results
 
   function handleSubmit(e) {
     e.preventDefault();
-    setSearchParams({ q: input });
-    setPage(1);
-    setInput("");
+    setSearchParams({ query: input, page: "1" });
   }
 
   return (
@@ -68,8 +65,13 @@ export default function Search() {
       <div className="pagination-container">
         <button
           onClick={() => {
-            setPage((prev) => prev - 1);
+            setSearchParams({ query: input, page: String(Number(page) - 1) });
             window.scrollTo(0, 0);
+            // window.scrollTo({
+            //   top: "60px",
+            //   left: 0,
+            //   behavior: "smooth",
+            // });
           }}
           disabled={page == 1}
         >
@@ -78,7 +80,7 @@ export default function Search() {
         <span>page: {page}</span>
         <button
           onClick={() => {
-            setPage((prev) => prev + 1);
+            setSearchParams({ query: input, page: String(Number(page) + 1) });
             window.scrollTo(0, 0);
           }}
           disabled={page == data?.total_pages}

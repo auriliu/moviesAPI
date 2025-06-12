@@ -10,7 +10,6 @@ body {
 nav {
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
 }
 
 nav ul {
@@ -83,4 +82,8 @@ nav a:hover {
 form,
 .movies-filters {
   padding: 2rem 0;
+}
+
+.movies-filters .active {
+  border: 2px solid red;
 }

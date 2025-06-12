@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 const API_KEY = "09d16205c5c756953a18abf4f53af424";
 
 import useFetch from "../hooks/useFetch";
@@ -6,15 +5,10 @@ import { Link, useSearchParams } from "react-router";
 
 export default function Movies() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
 
-  const [query, setQuery] = useState("popular"); // "popular, top_rated, upcoming"
-  // when to lift state up to the url:
-  // You want users to be able to share the page with current filters (?query=top_rated&page=3).
-  // You want the Back/Forward buttons to reflect navigation (i.e., going back to "popular").
-  // You want to persist state on refresh.
-
-  const [genreID, setGenreID] = useState("");
+  const query = searchParams.get("query") || "popular";
+  const page = Number(searchParams.get("page")) || 1;
+  const genreID = searchParams.get("genre") || "";
 
   const {
     data: moviesData,
@@ -23,10 +17,6 @@ export default function Movies() {
   } = useFetch(
     `https://api.themoviedb.org/3/movie/${query}?api_key=${API_KEY}&page=${page}`
   );
-
-  useEffect(() => {
-    setSearchParams({ page });
-  }, [page, setSearchParams]);
 
   const {
     data: genresData,
@@ -37,17 +27,24 @@ export default function Movies() {
   );
 
   const { data: filteredData } = useFetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreID}`
+    `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreID}&page=${page}`
   );
 
-  if (moviesLoading) return <p>loading...</p>;
+  if (moviesLoading || genresLoading) return <p>loading...</p>;
   if (moviesError) return <p>error: {moviesError}</p>;
-
-  if (genresLoading) return <p>loading...</p>;
   if (genresError) return <p>error: {genresError}</p>;
 
   const moviesToRender =
     genreID === "" ? moviesData.results : filteredData.results;
+
+  const handleSetParams = (newParams) => {
+    setSearchParams({
+      query,
+      page,
+      genre: genreID,
+      ...newParams,
+    });
+  };
 
   return (
     <div>
@@ -55,45 +52,41 @@ export default function Movies() {
         <span>MOVIES:</span>
         <br />
         <br />
-
-        <button
-          onClick={() => {
-            setGenreID("");
-            setPage(1);
-            setQuery("popular");
-          }}
-        >
-          popular
-        </button>
-        <button
-          onClick={() => {
-            setGenreID("");
-            setPage(1);
-            setQuery("top_rated");
-          }}
-        >
-          top-rated
-        </button>
-        <button
-          onClick={() => {
-            setGenreID("");
-            setPage(1);
-            setQuery("upcoming");
-          }}
-        >
-          upcoming
-        </button>
+        <div className="buttons">
+          <button
+            className={query === "popular" && genreID === "" ? "active" : ""}
+            onClick={() =>
+              handleSetParams({ query: "popular", genre: "", page: 1 })
+            }
+          >
+            popular
+          </button>
+          <button
+            className={query === "top_rated" && genreID === "" ? "active" : ""}
+            onClick={() =>
+              handleSetParams({ query: "top_rated", genre: "", page: 1 })
+            }
+          >
+            top-rated
+          </button>
+          <button
+            className={query === "upcoming" && genreID === "" ? "active" : ""}
+            onClick={() =>
+              handleSetParams({ query: "upcoming", genre: "", page: 1 })
+            }
+          >
+            upcoming
+          </button>
+        </div>
         <br />
         <br />
-        {genresData.genres.length == 0 && <p>no results</p>}
+        {genresData.genres.length === 0 && <p>no genres found</p>}
 
         {genresData.genres.map((i) => (
           <button
+            className={genreID === String(i.id) ? "active" : ""}
             key={i.id}
-            onClick={() => {
-              setPage(1);
-              setGenreID(i.id);
-            }}
+            onClick={() => handleSetParams({ genre: i.id, query: "", page: 1 })}
           >
             {i.name}
           </button>
@@ -101,14 +94,15 @@ export default function Movies() {
       </div>
 
       <div className="movies-container">
-        {moviesToRender.length == 0 && <p>no results</p>}
+        {moviesToRender.length === 0 && <p>no results</p>}
         {moviesToRender.map((movie) => (
           <Link to={`/movies/${movie.id}`} key={movie.id}>
             <div className="movie-card">
               <img
                 src={
-                  movie.poster_path &&
-                  `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                  movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                    : ""
                 }
                 alt={`${movie.title || "no title"} poster`}
               />
@@ -123,21 +117,19 @@ export default function Movies() {
       {/* pagination */}
       <div className="pagination-container">
         <button
-          onClick={() => {
-            setPage((prev) => prev - 1);
-            window.scrollTo(0, 0);
-          }}
-          disabled={page == 1}
+          onClick={() => handleSetParams({ page: page - 1, query: "" })}
+          disabled={page === 1}
         >
           prev
         </button>
         <span>page: {page}</span>
         <button
-          onClick={() => {
-            setPage((prev) => prev + 1);
-            window.scrollTo(0, 0);
-          }}
-          disabled={page == moviesData?.total_pages}
+          onClick={() => handleSetParams({ page: page + 1, query: "" })}
+          disabled={
+            genreID
+              ? page === filteredData?.total_pages
+              : page === moviesData?.total_pages
+          }
         >
           next
         </button>
