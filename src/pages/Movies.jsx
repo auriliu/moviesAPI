@@ -1,7 +1,8 @@
 import useFetch from "../hooks/useFetch_wToken";
 import { Link, useSearchParams } from "react-router";
 
-const token = import.meta.env.VITE_TMDB_API_TOKEN;
+const TOKEN = import.meta.env.VITE_TMDB_API_TOKEN;
+const TMDB_BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
 
 export default function Movies() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,20 +15,17 @@ export default function Movies() {
     data: moviesData,
     loading: moviesLoading,
     error: moviesError,
-  } = useFetch(
-    `https://api.themoviedb.org/3/movie/${query}?page=${page}`,
-    token
-  );
+  } = useFetch(`${TMDB_BASE_URL}/movie/${query}?page=${page}`, TOKEN);
 
   const {
     data: genresData,
     loading: genresLoading,
     error: genresError,
-  } = useFetch(`https://api.themoviedb.org/3/genre/movie/list`, token);
+  } = useFetch(`${TMDB_BASE_URL}/genre/movie/list`, TOKEN);
 
   const { data: filteredData } = useFetch(
-    `https://api.themoviedb.org/3/discover/movie?with_genres=${genreID}&page=${page}`,
-    token
+    `${TMDB_BASE_URL}/discover/movie?with_genres=${genreID}&page=${page}`,
+    TOKEN
   );
 
   if (moviesLoading || genresLoading) return <p>loading...</p>;

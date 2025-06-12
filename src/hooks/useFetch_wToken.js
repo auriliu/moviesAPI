@@ -15,7 +15,10 @@ export default function useFetch(url, token) {
         setLoading(true);
         const res = await fetch(url, {
           signal: controller.signal,
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (!res.ok) throw new Error("failed to fetch");
