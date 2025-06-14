@@ -2,6 +2,8 @@ import { useState } from "react";
 import useFetch from "../hooks/useFetch_wToken";
 import { Link, useSearchParams } from "react-router";
 
+import Heart from "../components/Heart";
+
 const TOKEN = import.meta.env.VITE_TMDB_API_TOKEN;
 const TMDB_BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
 
@@ -16,12 +18,12 @@ export default function Home() {
     TOKEN
   );
 
-  const [watched, setWatched] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   console.log(data.results);
 
-  if (loading) return <p>loading...</p>;
-  if (error) return <p>error: {error}</p>;
+  if (loading) return <p className="loading">loading...</p>;
+  if (error) return <p className="error">error: {error}</p>;
 
   return (
     <div className="home__movies">
@@ -64,24 +66,17 @@ export default function Home() {
               <div className="home__movie--overlay">
                 <p>{movie.title || "No title available"}</p>
                 <div className="home__movies--rating">
+                  <span>rating: </span>
                   <i class="fa-solid fa-star"></i>
                   <span>{movie.vote_average?.toFixed(1) || "No rating"}</span>
-                  <span>
+                  {/* <span>
                     {movie.release_date.split("-")[0] || "No release date"}
-                  </span>
+                  </span> */}
                 </div>
                 <p className="overview">{movie.overview || "no description"}</p>
                 <div className="home__movie--icons">
-                  <i
-                    class={
-                      watched ? "fa-solid fa-heart" : "fa-regular fa-heart"
-                    }
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setWatched(!watched);
-                    }}
-                  ></i>
+                  <Heart liked={liked} setLiked={setLiked} />
+
                   <i class="fa-solid fa-bookmark" title="bookmark"></i>
                   <i class="fa-solid fa-share" title="share"></i>
                 </div>
@@ -106,7 +101,9 @@ export default function Home() {
           </button>
         )}
 
-        <span>page: {page}</span>
+        <span style={page >= 2 ? { marginLeft: "1rem" } : {}}>
+          page: {page}
+        </span>
         <button
           onClick={() => {
             setSearchParams({ query, page: page + 1 });

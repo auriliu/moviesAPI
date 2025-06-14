@@ -12,37 +12,65 @@ export default function MovieDetails() {
     `${TMDB_BASE_URL}/movie/${id}`,
     token
   );
+  console.log(data);
+  // backdrop_path: "..."
+  // release_date: "..."
+  // runtime: "..."
+  // tagline: "..."
+  // credits.cast / crew
+  // GET https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key=YOUR_API_KEY
 
   if (loading) return <p>loading...</p>;
   if (error) return <p>error: {error}</p>;
   if (!data) return <p>no results</p>;
 
   return (
-    <div className="movie-container">
-      <div className="movie-poster">
-        <h1>{data.title || "no title available"}</h1>
+    <>
+      <div className="movie-container">
+        <div className="movie-poster">
+          {data.poster_path && (
+            <img
+              src={`https://image.tmdb.org/t/p/w300${data.poster_path}`}
+              alt={`${data.title || "no title"} poster`}
+            />
+          )}
+        </div>
+        <div
+          className="movie-details"
+          style={{
+            backgroundImage: `
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('https://image.tmdb.org/t/p/w300${data.backdrop_path}')
+  `,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundBlendMode: "darken",
+          }}
+        >
+          <div className="details">
+            <h2>{data.title || "no title available"}</h2>
+            <h3>{data.tagline || ""}</h3>
 
-        {data.poster_path && (
-          <img
-            src={`https://image.tmdb.org/t/p/w300${data.poster_path}`}
-            alt={`${data.title || "no title"} poster`}
-          />
-        )}
+            <p>{data.overview || "no overview available"}</p>
+            <p className="details-meta">
+              <span>release:</span> {data.release_date || "unknown"}
+            </p>
+            <p className="details-meta">
+              <span>runtime: </span>
+              {data.runtime ? `${data.runtime} minutes` : "runtime unknown"}
+            </p>
+            <p className="details-meta">
+              <span>rating: </span>
+              {data.vote_average.toFixed(1) || "unknown"} (
+              {data.vote_count || "unknown"} votes)
+            </p>
+          </div>
+        </div>
       </div>
-      <div className="movie-text">
-        <p>{data.overview || "no overview available"}</p>
-        <p>release date: {data.release_date || "unknown"}</p>
-        <p>
-          runtime:
-          {data.runtime ? `${data.runtime} minutes` : "runtime unknown"}
-        </p>
-        <p>
-          rating: {data.vote_average || "unknown"} (
-          {data.vote_count || "unknown"} votes)
-        </p>
-        <p>status: {data.status || "unknown"}</p>
-        <button onClick={() => navigate(-1)}>back to all movies</button>
-      </div>
-    </div>
+
+      <button className="movie__details--button" onClick={() => navigate(-1)}>
+        &larr; back
+      </button>
+    </>
   );
 }
