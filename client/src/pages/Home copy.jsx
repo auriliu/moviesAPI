@@ -46,7 +46,7 @@ export default function Home() {
 
       <div className="movies-container">
         {data.results?.length === 0 && <p>no results</p>}
-        {data.results.map((movie) => (
+        {data.results?.map((movie) => (
           <Link to={`/movies/${movie.id}`} key={movie.id}>
             <div className="movie-card">
               {movie.poster_path ? (
@@ -68,14 +68,20 @@ export default function Home() {
       {/* pagination */}
       <div className="pagination-container">
         <button
-          onClick={() => setSearchParams({ query, page: page - 1 })}
+          onClick={() => {
+            setSearchParams({ query, page: page - 1 });
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+          }}
           disabled={page === 1}
         >
           prev
         </button>
         <span>page: {page}</span>
         <button
-          onClick={() => setSearchParams({ query, page: page + 1 })}
+          onClick={() => {
+            setSearchParams({ query, page: page + 1 });
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+          }}
           disabled={page >= data.total_pages}
         >
           next

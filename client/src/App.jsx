@@ -1,15 +1,15 @@
 import { Routes, Route } from "react-router";
 
-import { Navbar } from "./components/Navbar";
-
 import "./CSS/main.css";
+
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
 import Series from "./pages/Series";
 
+import Header from "./components/Header";
+import Search from "./components/Search";
 import MovieDetails from "./components/MovieDetails";
 import SerieDetails from "./components/SerieDetails";
-import Search from "./components/Search";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedComponent from "./components/ProtectedComponent";
@@ -19,7 +19,7 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      <Header />
 
       <Routes>
         <Route path="/" element={<Home />} />
