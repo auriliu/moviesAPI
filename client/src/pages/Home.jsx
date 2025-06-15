@@ -95,7 +95,6 @@ export default function Home() {
               setSearchParams({ query, page: page - 1 });
               // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
             }}
-            disabled={page === 1}
           >
             previous
           </button>

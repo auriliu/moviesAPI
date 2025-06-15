@@ -36,13 +36,19 @@ export default function Movies() {
   return (
     <div>
       <div className="movies-filters">
-        <span>MOVIES: </span>
-
         {genresData.genres.length === 0 && <p>no genres found</p>}
 
-        {genresData.genres.map((i) => (
+        {genresData.genres.map((i, index) => (
           <button
-            className={genreID === String(i.id) ? "active" : ""}
+            className={
+              genreID
+                ? genreID === String(i.id)
+                  ? "active"
+                  : ""
+                : index === 0
+                ? "active"
+                : ""
+            }
             key={i.id}
             onClick={() => setSearchParams({ genre: i.id, page: 1 })}
           >
@@ -51,11 +57,12 @@ export default function Movies() {
         ))}
       </div>
 
-      <div className="movies-container">
+      {/* <div className="movies-container"> */}
+      <div className="home__movies--container">
         {filteredData.results?.length === 0 && <p>no results</p>}
         {filteredData.results.map((movie) => (
           <Link to={`/movies/${movie.id}`} key={movie.id}>
-            <div className="movie-card">
+            <div className="home__movie--card">
               {movie.poster_path ? (
                 <img
                   alt={`${movie.title || "no title"} poster`}
@@ -64,9 +71,23 @@ export default function Movies() {
               ) : (
                 <div className="no_poster">no image available</div>
               )}
-              {/* <p>{movie.title || "no title available"}</p> */}
-              <p>{movie.vote_average || "no rating"}</p>
-              <p>{movie.release_date || "no release date"}</p>
+              {/* overlay */}
+              <div className="home__movie--overlay">
+                <p>{movie.title || "No title available"}</p>
+                <div className="home__movies--rating">
+                  <span>rating: </span>
+                  <i class="fa-solid fa-star"></i>
+                  <span>{movie.vote_average?.toFixed(1) || "No rating"}</span>
+                </div>
+                <p className="overview">{movie.overview || "no description"}</p>
+                <div className="home__movie--icons">
+                  {/* <Heart liked={liked} setLiked={setLiked} /> */}
+
+                  <i class="fa-solid fa-bookmark" title="bookmark"></i>
+                  <i class="fa-solid fa-share" title="share"></i>
+                </div>
+              </div>
+              {/* overlay */}
             </div>
           </Link>
         ))}
@@ -74,16 +95,20 @@ export default function Movies() {
 
       {/* pagination */}
       <div className="pagination-container">
-        <button
-          onClick={() => {
-            setSearchParams({ genre: genreID, page: page - 1 });
-            // window.scrollTo(0, 0);
-          }}
-          disabled={page === 1}
-        >
-          prev
-        </button>
-        <span>page: {page}</span>
+        {page >= 2 && (
+          <button
+            onClick={() => {
+              setSearchParams({ genre: genreID, page: page - 1 });
+              // window.scrollTo(0, 0);
+            }}
+          >
+            previous
+          </button>
+        )}
+
+        <span style={page >= 2 ? { marginLeft: "1rem" } : {}}>
+          page: {page}
+        </span>
         <button
           onClick={() => {
             setSearchParams({ genre: genreID, page: page + 1 });

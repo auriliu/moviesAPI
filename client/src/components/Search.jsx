@@ -18,8 +18,12 @@ export default function Search() {
     token
   );
 
+  const hasResults = !!searchParams.get("query");
+
   function handleSubmit(e) {
     e.preventDefault();
+    // setHasResults(true);
+
     if (input.length < 3) {
       alert("input must be at least 3 characters long");
       return;
@@ -44,22 +48,42 @@ export default function Search() {
 
       {loading && <p>loading...</p>}
       {!loading && !error && data.results.length > 0 && (
-        <div className="search-container">
+        <div className="home__movies--container">
           {data.results.map((movie) => {
             return (
               <Link to={`/search/${movie.id}`} key={movie.id}>
-                <div className="movie-container">
-                  <div className="movie-poster">
-                    <h3>{movie.title || "no title available"}</h3>
+                <div className="home__movie--card">
+                  {!movie.poster_path && <img className="no_poster" />}
 
-                    {movie.poster_path && (
-                      <img
-                        src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                        alt={`${movie.title || "no title"} poster`}
-                      />
-                    )}
-                    {!movie.poster_path && <p>movie poster not available</p>}
+                  {movie.poster_path && (
+                    <img
+                      className="home__movie--poster"
+                      src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                      alt={`${movie.title || "no title"} poster`}
+                    />
+                  )}
+
+                  {/* overlay */}
+                  <div className="home__movie--overlay">
+                    <p>{movie.title || "No title available"}</p>
+                    <div className="home__movies--rating">
+                      <span>rating: </span>
+                      <i class="fa-solid fa-star"></i>
+                      <span>
+                        {movie.vote_average?.toFixed(1) || "No rating"}
+                      </span>
+                    </div>
+                    <p className="overview">
+                      {movie.overview || "no description"}
+                    </p>
+                    <div className="home__movie--icons">
+                      <i class="fa-solid fa-bookmark" title="bookmark"></i>
+                      <i class="fa-solid fa-share" title="share"></i>
+                    </div>
                   </div>
+                  {/* overlay */}
+
+                  {!movie.poster_path && <p>movie poster not available</p>}
                 </div>
               </Link>
             );
@@ -67,34 +91,34 @@ export default function Search() {
         </div>
       )}
 
-      {/* pagination */}
-      <div className="pagination-container">
-        <button
-          onClick={() => {
-            setSearchParams({ query: input, page: String(Number(page) - 1) });
-            window.scrollTo(0, 0);
-            // window.scrollTo({
-            //   top: "60px",
-            //   left: 0,
-            //   behavior: "smooth",
-            // });
-          }}
-          disabled={page == 1}
-        >
-          prev
-        </button>
-        <span>page: {page}</span>
-        <button
-          onClick={() => {
-            setSearchParams({ query: input, page: String(Number(page) + 1) });
-            window.scrollTo(0, 0);
-          }}
-          disabled={page == data?.total_pages}
-        >
-          next
-        </button>
-      </div>
-      {/* pagination */}
+      {hasResults && (
+        <div className="pagination-container">
+          {page >= 2 && (
+            <button
+              onClick={() => {
+                setSearchParams({
+                  query: input,
+                  page: String(Number(page) - 1),
+                });
+              }}
+            >
+              previous
+            </button>
+          )}
+
+          <span style={page >= 2 ? { marginLeft: "1rem" } : {}}>
+            page: {page}
+          </span>
+          <button
+            onClick={() => {
+              setSearchParams({ query: input, page: String(Number(page) + 1) });
+            }}
+            disabled={page == data?.total_pages}
+          >
+            next
+          </button>
+        </div>
+      )}
     </>
   );
 }

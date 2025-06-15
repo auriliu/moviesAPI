@@ -67,6 +67,9 @@ a {
 nav a:hover {
   color: var(--color-accent-red);
 }
+nav .active {
+  color: var(--color-accent-red);
+}
 
 .home__movies--container {
   display: grid;
@@ -77,8 +80,13 @@ nav a:hover {
 
 .home__movie--card {
   max-width: 400px;
+
   text-align: center;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.no_poster {
+  height: 235px;
 }
 
 .home__movies--rating {
@@ -119,6 +127,7 @@ nav a:hover {
 form {
   padding: 2rem 0;
 }
+/* BUTTONS */
 
 .home__movies--filters {
   display: flex;
@@ -126,13 +135,13 @@ form {
   padding: 2rem;
 }
 
-.home__movies--filters .active {
+.home__movies--filters .active,
+.movies-filters .active {
   background-color: var(--color-accent-red);
 }
 
-/* BUTTONS */
-
-.home__movies--filters button {
+.home__movies--filters button,
+.movies-filters button {
   background-color: var(--color-accent-blue);
   color: var(--color-light);
   padding: 10px 20px;
@@ -142,10 +151,21 @@ form {
   transition: background-color 0.3s ease;
 }
 
-.home__movies--filters button:hover {
+.home__movies--filters button:hover,
+.movies-filters button:hover {
   background-color: var(--color-accent-red);
 }
 
+/* FILTERS IN GENRES */
+
+.movies-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/*  */
 .logo__container {
   display: flex;
   align-items: center;
@@ -290,11 +310,44 @@ img {
 
 .details {
   max-width: 64ch;
-  /* border: 5px solid red; */
 }
 
 .details-meta span {
   color: var(--color-accent-red);
   font-weight: bold;
   letter-spacing: 1px;
+}
+
+/* SEARCH */
+form {
+  display: flex;
+  gap: 1rem;
+  margin-left: 2rem;
+}
+
+input[type="text"] {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+
+input[type="text"]:focus {
+  border: 2px solid var(--color-accent-red);
+  outline: none;
+}
+
+button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: var(--color-accent-blue);
+  border: none;
+  border-radius: 6px;
+  color: var(--color-light);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--color-accent-red);
 }
