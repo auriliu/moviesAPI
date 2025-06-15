@@ -1,7 +1,12 @@
-export default function Heart({ liked, setLiked }) {
+import { useState } from "react";
+
+export default function Heart() {
+  const [liked, setLiked] = useState(false);
+
   return (
     <i
-      class={liked ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+      title="like"
+      className={liked ? "fa-solid fa-heart" : "fa-regular fa-heart"}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();

@@ -3,6 +3,7 @@ import useFetch from "../hooks/useFetch_wToken";
 import { Link, useSearchParams } from "react-router";
 
 import Pagination from "../components/Pagination";
+import Movie from "../components/Movie";
 
 const TOKEN = import.meta.env.VITE_TMDB_API_TOKEN;
 const TMDB_BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
@@ -59,39 +60,10 @@ export default function Genres() {
         ))}
       </div>
 
-      {/* <div className="movies-container"> */}
       <div className="home__movies--container">
         {filteredData.results?.length === 0 && <p>no results</p>}
         {filteredData.results.map((movie) => (
-          <Link to={`/genres/${movie.id}`} key={movie.id}>
-            <div className="home__movie--card">
-              {movie.poster_path ? (
-                <img
-                  alt={`${movie.title || "no title"} poster`}
-                  src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                />
-              ) : (
-                <div className="no_poster">no image available</div>
-              )}
-              {/* overlay */}
-              <div className="home__movie--overlay">
-                <p>{movie.title || "No title available"}</p>
-                <div className="home__movies--rating">
-                  <span>rating: </span>
-                  <i class="fa-solid fa-star"></i>
-                  <span>{movie.vote_average?.toFixed(1) || "No rating"}</span>
-                </div>
-                <p className="overview">{movie.overview || "no description"}</p>
-                <div className="home__movie--icons">
-                  {/* <Heart liked={liked} setLiked={setLiked} /> */}
-
-                  <i class="fa-solid fa-bookmark" title="bookmark"></i>
-                  <i class="fa-solid fa-share" title="share"></i>
-                </div>
-              </div>
-              {/* overlay */}
-            </div>
-          </Link>
+          <Movie movie={movie} url={"genres"} />
         ))}
       </div>
 
@@ -99,5 +71,3 @@ export default function Genres() {
     </div>
   );
 }
-
-//

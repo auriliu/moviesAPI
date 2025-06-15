@@ -16,14 +16,29 @@ import { useState } from "react";
 
 function App() {
   const isLoggedIn = false; //contextAPI to store it.
-  const [liked, setLiked] = useState(false);
-  const [watchedMovies, setWatchedMovies] = useState([]);
+
+  const [watchedMovies, setWatchedMovies] = useState([
+    {
+      title: "title-1",
+      id: 1,
+    },
+    {
+      title: "title-2",
+      id: 2,
+    },
+  ]);
 
   return (
     <>
       <Header />
 
       <Routes>
+        <Route
+          path="/watched"
+          element={<WatchedMovies watchedMovies={watchedMovies} />}
+        />
+        <Route path="/watched/:id" element={<MovieDetails />} />
+
         <Route path="/highlights" element={<Highlights />} />
         <Route path="/highlights/:id" element={<MovieDetails />} />
 
@@ -33,9 +48,7 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/search/:id" element={<MovieDetails />} />
 
-        <Route path="/watched" element={<WatchedMovies />} />
-        <Route path="/watched/:id" element={<MovieDetails />} />
-
+        {/* protected routes */}
         <Route
           path="/search"
           element={
