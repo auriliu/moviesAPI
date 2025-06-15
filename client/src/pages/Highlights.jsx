@@ -4,6 +4,7 @@ import { Link, useSearchParams } from "react-router";
 
 import Heart from "../components/Heart";
 import Pagination from "../components/Pagination";
+import HighlightsFilters from "../components/HighlightsFilters";
 
 const TOKEN = import.meta.env.VITE_TMDB_API_TOKEN;
 const TMDB_BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
@@ -21,33 +22,12 @@ export default function Highlights() {
 
   const [liked, setLiked] = useState(false);
 
-  console.log(data.results);
-
   if (loading) return <p className="loading">loading...</p>;
   if (error) return <p className="error">error: {error}</p>;
 
   return (
     <div className="home__movies">
-      <div className="home__movies--filters">
-        <button
-          className={query === "popular" ? "active" : ""}
-          onClick={() => setSearchParams({ query: "popular", page: 1 })}
-        >
-          popular
-        </button>
-        <button
-          className={query === "top_rated" ? "active" : ""}
-          onClick={() => setSearchParams({ query: "top_rated", page: 1 })}
-        >
-          top-rated
-        </button>
-        <button
-          className={query === "upcoming" ? "active" : ""}
-          onClick={() => setSearchParams({ query: "upcoming", page: 1 })}
-        >
-          upcoming
-        </button>
-      </div>
+      <HighlightsFilters query={query} setSearchParams={setSearchParams} />
 
       <div className="home__movies--container">
         {data.results?.length === 0 && <p>no results</p>}
