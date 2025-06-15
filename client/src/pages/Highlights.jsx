@@ -3,11 +3,12 @@ import useFetch from "../hooks/useFetch_wToken";
 import { Link, useSearchParams } from "react-router";
 
 import Heart from "../components/Heart";
+import Pagination from "../components/Pagination";
 
 const TOKEN = import.meta.env.VITE_TMDB_API_TOKEN;
 const TMDB_BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
 
-export default function Home() {
+export default function Highlights() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const query = searchParams.get("query") || "popular";
@@ -51,7 +52,7 @@ export default function Home() {
       <div className="home__movies--container">
         {data.results?.length === 0 && <p>no results</p>}
         {data.results?.map((movie) => (
-          <Link to={`/movies/${movie.id}`} key={movie.id}>
+          <Link to={`/highlights/${movie.id}`} key={movie.id}>
             <div className="home__movie--card">
               {movie.poster_path ? (
                 <img
@@ -69,9 +70,6 @@ export default function Home() {
                   <span>rating: </span>
                   <i class="fa-solid fa-star"></i>
                   <span>{movie.vote_average?.toFixed(1) || "No rating"}</span>
-                  {/* <span>
-                    {movie.release_date.split("-")[0] || "No release date"}
-                  </span> */}
                 </div>
                 <p className="overview">{movie.overview || "no description"}</p>
                 <div className="home__movie--icons">
@@ -87,33 +85,7 @@ export default function Home() {
         ))}
       </div>
 
-      {/* pagination */}
-      <div className="pagination-container">
-        {page >= 2 && (
-          <button
-            onClick={() => {
-              setSearchParams({ query, page: page - 1 });
-              // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-            }}
-          >
-            previous
-          </button>
-        )}
-
-        <span style={page >= 2 ? { marginLeft: "1rem" } : {}}>
-          page: {page}
-        </span>
-        <button
-          onClick={() => {
-            setSearchParams({ query, page: page + 1 });
-            // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-          }}
-          disabled={page >= data.total_pages}
-        >
-          next
-        </button>
-      </div>
-      {/* pagination */}
+      <Pagination page={page} query={query} setSearchParams={setSearchParams} />
     </div>
   );
 }

@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import useFetch from "../hooks/useFetch_wToken";
 import { Link, useSearchParams } from "react-router";
 
+import Pagination from "../components/Pagination";
+
 const TOKEN = import.meta.env.VITE_TMDB_API_TOKEN;
 const TMDB_BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
 
-export default function Movies() {
+export default function Genres() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const page = Number(searchParams.get("page")) || 1;
@@ -61,7 +63,7 @@ export default function Movies() {
       <div className="home__movies--container">
         {filteredData.results?.length === 0 && <p>no results</p>}
         {filteredData.results.map((movie) => (
-          <Link to={`/movies/${movie.id}`} key={movie.id}>
+          <Link to={`/genres/${movie.id}`} key={movie.id}>
             <div className="home__movie--card">
               {movie.poster_path ? (
                 <img
@@ -93,33 +95,7 @@ export default function Movies() {
         ))}
       </div>
 
-      {/* pagination */}
-      <div className="pagination-container">
-        {page >= 2 && (
-          <button
-            onClick={() => {
-              setSearchParams({ genre: genreID, page: page - 1 });
-              // window.scrollTo(0, 0);
-            }}
-          >
-            previous
-          </button>
-        )}
-
-        <span style={page >= 2 ? { marginLeft: "1rem" } : {}}>
-          page: {page}
-        </span>
-        <button
-          onClick={() => {
-            setSearchParams({ genre: genreID, page: page + 1 });
-            // window.scrollTo(0, 0);
-          }}
-          disabled={page >= filteredData.total_pages}
-        >
-          next
-        </button>
-      </div>
-      {/* pagination */}
+      <Pagination page={page} setSearchParams={setSearchParams} />
     </div>
   );
 }

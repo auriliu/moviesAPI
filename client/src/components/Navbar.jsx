@@ -5,16 +5,19 @@ export default function Navbar() {
     <nav>
       <ul>
         <li>
-          <NavLink to="/">Highlights</NavLink>
+          <NavLink to="/highlights">Highlights</NavLink>
         </li>
         <li>
-          <NavLink to="/movies">Genres</NavLink>
+          <NavLink to="/genres">Genres</NavLink>
         </li>
         {/* <li>
           <NavLink to="/series">Series</NavLink>
         </li> */}
         <li>
           <NavLink to="/search">Search</NavLink>
+        </li>
+        <li>
+          <NavLink to="/watched">Watched</NavLink>
         </li>
       </ul>
     </nav>

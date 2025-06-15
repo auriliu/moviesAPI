@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import useFetch from "../hooks/useFetch_wToken";
 
+import Pagination from "./Pagination";
+
 const token = import.meta.env.VITE_TMDB_API_TOKEN;
 
 export default function Search() {
@@ -92,32 +94,11 @@ export default function Search() {
       )}
 
       {hasResults && (
-        <div className="pagination-container">
-          {page >= 2 && (
-            <button
-              onClick={() => {
-                setSearchParams({
-                  query: input,
-                  page: String(Number(page) - 1),
-                });
-              }}
-            >
-              previous
-            </button>
-          )}
-
-          <span style={page >= 2 ? { marginLeft: "1rem" } : {}}>
-            page: {page}
-          </span>
-          <button
-            onClick={() => {
-              setSearchParams({ query: input, page: String(Number(page) + 1) });
-            }}
-            disabled={page == data?.total_pages}
-          >
-            next
-          </button>
-        </div>
+        <Pagination
+          page={page}
+          query={query}
+          setSearchParams={setSearchParams}
+        />
       )}
     </>
   );
