@@ -24,16 +24,14 @@ export default function Highlights() {
 
   return (
     <div className="home__movies">
-      {/* <HighlightsFilters query={query} setSearchParams={setSearchParams} />
-
+      <HighlightsFilters query={query} setSearchParams={setSearchParams} />
       <div className="home__movies--container">
         {data.results?.length === 0 && <p>no results</p>}
         {data.results?.map((movie) => (
           <Movie movie={movie} url={"highlights"} />
         ))}
       </div>
-
-      <Pagination page={page} query={query} setSearchParams={setSearchParams} /> */}
+      <Pagination page={page} query={query} setSearchParams={setSearchParams} />
     </div>
   );
 }
