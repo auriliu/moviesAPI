@@ -8,7 +8,7 @@ import Movie from "../components/Movie";
 const TOKEN = import.meta.env.VITE_TMDB_API_TOKEN;
 const TMDB_BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
 
-export default function Highlights() {
+export default function Highlights({ addMovie, removeMovie }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const query = searchParams.get("query") || "popular";
@@ -28,7 +28,13 @@ export default function Highlights() {
       <div className="home__movies--container">
         {data.results?.length === 0 && <p>no results</p>}
         {data.results?.map((movie) => (
-          <Movie movie={movie} url={"highlights"} />
+          <Movie
+            movie={movie}
+            url={"highlights"}
+            key={movie.id}
+            addMovie={addMovie}
+            removeMovie={removeMovie}
+          />
         ))}
       </div>
       <Pagination page={page} query={query} setSearchParams={setSearchParams} />

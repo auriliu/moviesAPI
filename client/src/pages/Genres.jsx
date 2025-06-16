@@ -63,7 +63,7 @@ export default function Genres() {
       <div className="home__movies--container">
         {filteredData.results?.length === 0 && <p>no results</p>}
         {filteredData.results.map((movie) => (
-          <Movie movie={movie} url={"genres"} />
+          <Movie movie={movie} url={"genres"} key={movie.id} />
         ))}
       </div>
 

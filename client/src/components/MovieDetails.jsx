@@ -12,13 +12,6 @@ export default function MovieDetails() {
     `${TMDB_BASE_URL}/movie/${id}`,
     token
   );
-  console.log(data);
-  // backdrop_path: "..."
-  // release_date: "..."
-  // runtime: "..."
-  // tagline: "..."
-  // credits.cast / crew
-  // GET https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key=YOUR_API_KEY
 
   if (loading) return <p>loading...</p>;
   if (error) return <p>error: {error}</p>;

@@ -2,9 +2,9 @@ import { Link } from "react-router";
 
 import Heart from "./Heart";
 
-export default function Movie({ movie, url }) {
+export default function Movie({ movie, url, addMovie, removeMovie }) {
   return (
-    <Link to={`/${url}/${movie.id}`} key={movie.id}>
+    <Link to={`/${url}/${movie.id}`}>
       <div className="home__movie--card">
         <div>
           {movie.poster_path ? (
@@ -28,10 +28,15 @@ export default function Movie({ movie, url }) {
           </div>
           <p className="overview">{movie.overview || "no description"}</p>
           <div className="home__movie--icons">
-            <Heart />
+            <Heart
+              movie={movie}
+              addMovie={addMovie}
+              removeMovie={removeMovie}
+            />
             <i className="fa-solid fa-plus" title="add to watched movies"></i>
             <i className="fa-solid fa-share" title="share"></i>
           </div>
+          {/* <button onClick={handleAdd}>add</button> */}
         </div>
         {/* overlay */}
       </div>
