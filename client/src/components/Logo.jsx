@@ -5,7 +5,7 @@ export default function Logo() {
   return (
     <div className="logo__container">
       <img src={LogoImage} alt="logo" className="logo__img" />
-      <span>Cinemate</span>
+      <span className="logo__title">Cinemate</span>
     </div>
   );
 }

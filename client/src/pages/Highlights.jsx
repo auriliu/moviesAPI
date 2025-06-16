@@ -24,7 +24,7 @@ export default function Highlights() {
 
   return (
     <div className="home__movies">
-      <HighlightsFilters query={query} setSearchParams={setSearchParams} />
+      {/* <HighlightsFilters query={query} setSearchParams={setSearchParams} />
 
       <div className="home__movies--container">
         {data.results?.length === 0 && <p>no results</p>}
@@ -33,7 +33,7 @@ export default function Highlights() {
         ))}
       </div>
 
-      <Pagination page={page} query={query} setSearchParams={setSearchParams} />
+      <Pagination page={page} query={query} setSearchParams={setSearchParams} /> */}
     </div>
   );
 }

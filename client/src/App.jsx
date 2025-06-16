@@ -8,37 +8,20 @@ import Genres from "./pages/Genres";
 import Header from "./components/Header";
 import Search from "./components/Search";
 import MovieDetails from "./components/MovieDetails";
-import WatchedMovies from "./pages/WatchedMovies";
+import SeenMovies from "./pages/SeenMovies";
+import MoviesToWatch from "./pages/MoviesToWatch";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedComponent from "./components/ProtectedComponent";
-import { useState } from "react";
 
 function App() {
   const isLoggedIn = false; //contextAPI to store it.
-
-  const [watchedMovies, setWatchedMovies] = useState([
-    {
-      title: "title-1",
-      id: 1,
-    },
-    {
-      title: "title-2",
-      id: 2,
-    },
-  ]);
 
   return (
     <>
       <Header />
 
       <Routes>
-        <Route
-          path="/watched"
-          element={<WatchedMovies watchedMovies={watchedMovies} />}
-        />
-        <Route path="/watched/:id" element={<MovieDetails />} />
-
         <Route path="/highlights" element={<Highlights />} />
         <Route path="/highlights/:id" element={<MovieDetails />} />
 
@@ -47,6 +30,12 @@ function App() {
 
         <Route path="/search" element={<Search />} />
         <Route path="/search/:id" element={<MovieDetails />} />
+
+        <Route path="/seen" element={<SeenMovies />} />
+        <Route path="/seen/:id" element={<MovieDetails />} />
+
+        <Route path="/queue" element={<MoviesToWatch />} />
+        <Route path="/queue/:id" element={<MovieDetails />} />
 
         {/* protected routes */}
         <Route
