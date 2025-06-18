@@ -6,6 +6,7 @@ import Highlights from "./pages/Highlights";
 import Genres from "./pages/Genres";
 
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Search from "./components/Search";
 import MovieDetails from "./components/MovieDetails";
 import SeenMovies from "./pages/SeenMovies";
@@ -19,7 +20,6 @@ function App() {
   const isLoggedIn = false; //contextAPI to store it.
 
   const [watchedMovies, setWatchedMovies] = useState([]);
-  console.log(watchedMovies);
 
   const addMovie = (movie) => {
     setWatchedMovies((prev) => [...prev, movie]);
@@ -38,6 +38,10 @@ function App() {
       <Header />
 
       <Routes>
+        <Route
+          path="/"
+          element={<Highlights addMovie={addMovie} removeMovie={removeMovie} />}
+        />
         <Route
           path="/highlights"
           element={<Highlights addMovie={addMovie} removeMovie={removeMovie} />}
@@ -59,7 +63,6 @@ function App() {
         <Route path="/queue" element={<MoviesToWatch />} />
         <Route path="/queue/:id" element={<MovieDetails />} />
 
-        {/* protected routes */}
         <Route
           path="/search"
           element={
@@ -69,6 +72,8 @@ function App() {
           }
         />
       </Routes>
+
+      <Footer />
     </>
   );
 }

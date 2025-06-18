@@ -35,11 +35,11 @@ export default function Navbar() {
             Seen
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink to="/queue" onClick={() => setIsOpen(false)}>
             Queue
           </NavLink>
-        </li>
+        </li> */}
       </ul>
       <div className="nav-toggle" onClick={toggleMenu}>
         ☰

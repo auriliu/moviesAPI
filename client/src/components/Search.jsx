@@ -93,7 +93,7 @@ export default function Search() {
         </div>
       )}
 
-      {hasResults && (
+      {hasResults && data.results.length >= 20 && (
         <Pagination
           page={page}
           query={query}

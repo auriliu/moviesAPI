@@ -25,18 +25,20 @@ export default function Highlights({ addMovie, removeMovie }) {
   return (
     <div className="home__movies">
       <HighlightsFilters query={query} setSearchParams={setSearchParams} />
+
       <div className="home__movies--container">
         {data.results?.length === 0 && <p>no results</p>}
         {data.results?.map((movie) => (
           <Movie
-            movie={movie}
-            url={"highlights"}
             key={movie.id}
+            url={"highlights"}
+            movie={movie}
             addMovie={addMovie}
             removeMovie={removeMovie}
           />
         ))}
       </div>
+
       <Pagination page={page} query={query} setSearchParams={setSearchParams} />
     </div>
   );

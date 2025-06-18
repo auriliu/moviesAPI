@@ -32,6 +32,7 @@ export default function Genres() {
       }, 100);
     }
   }, [page, filteredData]);
+  // scrolls up and goes back down because the images are not loaded.
 
   if (genresLoading) return <p>loading...</p>;
   if (genresError) return <p>error: {genresError}</p>;

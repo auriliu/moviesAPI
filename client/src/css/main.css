@@ -59,8 +59,18 @@ ul {
 /*  */
 /*  */
 
+/* content inside the links were not centered */
+
+footer {
+  padding: 4rem;
+  text-align: center;
+}
+
 .home__movie--card {
   max-width: 400px;
+  /* center stuff */
+  margin-left: auto;
+  margin-right: auto;
 
   text-align: center;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
@@ -360,8 +370,11 @@ header {
 }
 
 /* Navbar: nav.navbar -> ul.navlinks -> li's */
+/* center the items inside the container */
+/* not centering the items inside the container */
 .nav-links {
   display: flex;
+
   gap: 2rem;
 }
 
@@ -432,4 +445,5 @@ header {
 .movie-container {
   padding: 0 2rem;
 }
+
 /* movie card next */
