@@ -3,6 +3,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 export default function Navbar() {
+  // auth
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // rest
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -30,16 +34,32 @@ export default function Navbar() {
             Search
           </NavLink>
         </li>
+
         <li>
-          <NavLink to="/seen" onClick={() => setIsOpen(false)}>
-            Seen
+          <NavLink to="/signup" onClick={() => setIsOpen(false)}>
+            signup
           </NavLink>
         </li>
-        {/* <li>
-          <NavLink to="/queue" onClick={() => setIsOpen(false)}>
-            Queue
+
+        {!isLoggedIn ? (
+          <li>
+            <NavLink to="/login" onClick={() => setIsOpen(false)}>
+              Login
+            </NavLink>
+          </li>
+        ) : (
+          <li>
+            <NavLink to="/login" onClick={() => setIsOpen(false)}>
+              Hello, Handsome
+            </NavLink>
+          </li>
+        )}
+
+        {isLoggedIn && (
+          <NavLink to="/logout" onClick={() => setIsLoggedIn(false)}>
+            logout
           </NavLink>
-        </li> */}
+        )}
       </ul>
       <div className="nav-toggle" onClick={toggleMenu}>
         ☰

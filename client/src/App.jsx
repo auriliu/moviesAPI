@@ -9,8 +9,9 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Search from "./components/Search";
 import MovieDetails from "./components/MovieDetails";
-import SeenMovies from "./pages/SeenMovies";
 import MoviesToWatch from "./pages/MoviesToWatch";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedComponent from "./components/ProtectedComponent";
@@ -54,10 +55,9 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/search/:id" element={<MovieDetails />} />
 
-        <Route
-          path="/seen"
-          element={<SeenMovies watchedMovies={watchedMovies} />}
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
         <Route path="/seen/:id" element={<MovieDetails />} />
 
         <Route path="/queue" element={<MoviesToWatch />} />
