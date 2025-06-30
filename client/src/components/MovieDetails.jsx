@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch_wToken";
 
 const token = import.meta.env.VITE_TMDB_API_TOKEN;

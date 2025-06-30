@@ -1,10 +1,20 @@
-import { NavLink } from "react-router";
-import { useState } from "react";
-import { useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+
+import { useUser } from "../UserContext";
 
 export default function Navbar() {
-  // auth
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, setUser } = useUser();
+  console.log(user);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) setUser(JSON.parse(storedUser));
+  }, [setUser]);
+
+  const handleLogout = () => {
+    setUser(null);
+  };
 
   // rest
   const [isOpen, setIsOpen] = useState(false);
@@ -35,22 +45,19 @@ export default function Navbar() {
           </NavLink>
         </li>
 
-        {!isLoggedIn ? (
-          <li>
+        <li>
+          {user ? (
+            // <p>Hello, {user}</p>
+            <p>Hello, {user.charAt(0).toUpperCase() + user.slice(1)}</p>
+          ) : (
             <NavLink to="/login" onClick={() => setIsOpen(false)}>
               Login
             </NavLink>
-          </li>
-        ) : (
-          <li>
-            <NavLink to="/login" onClick={() => setIsOpen(false)}>
-              Hello, Handsome
-            </NavLink>
-          </li>
-        )}
+          )}
+        </li>
 
-        {isLoggedIn && (
-          <NavLink to="/logout" onClick={() => setIsLoggedIn(false)}>
+        {user && (
+          <NavLink to="/" onClick={handleLogout}>
             logout
           </NavLink>
         )}

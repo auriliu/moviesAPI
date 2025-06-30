@@ -1,11 +1,15 @@
 // LoginForm.jsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
+
+import { useUser } from "../UserContext";
 
 const LoginForm = ({ onSwitchToSignUp }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const { setUser } = useUser();
 
   const navigate = useNavigate();
 
@@ -30,6 +34,9 @@ const LoginForm = ({ onSwitchToSignUp }) => {
 
       const data = await res.json();
       console.log(data);
+
+      localStorage.setItem("user", data.user.name);
+      setUser(data.user.name); // after successful login
 
       navigate("/");
     } catch {

@@ -469,6 +469,7 @@ header {
 .login-form span,
 .signup-form span {
   /* text-decoration: underline; */
+  /* font-weight: bold; */
   cursor: pointer;
   color: var(--color-accent-red);
 }

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useFetch from "../hooks/useFetch_wToken";
-import { Link, useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router-dom";
 
 import Pagination from "../components/Pagination";
 import Movie from "../components/Movie";

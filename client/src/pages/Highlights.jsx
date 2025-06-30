@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router";
+import { useSearchParams } from "react-router-dom";
 
 import useFetch from "../hooks/useFetch_wToken";
 import Pagination from "../components/Pagination";
