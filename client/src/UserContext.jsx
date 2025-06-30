@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 const UserContext = createContext();
 
+// fetch from backend instead of local storage.
+
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const stored = localStorage.getItem("user");

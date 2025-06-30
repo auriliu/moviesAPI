@@ -9,7 +9,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
+    if (storedUser) setUser(storedUser);
   }, [setUser]);
 
   const handleLogout = () => {
@@ -55,6 +55,14 @@ export default function Navbar() {
             </NavLink>
           )}
         </li>
+
+        {user && (
+          <li>
+            <NavLink to="/favorites" onClick={() => setIsOpen(false)}>
+              Favorites
+            </NavLink>
+          </li>
+        )}
 
         {user && (
           <NavLink to="/" onClick={handleLogout}>
