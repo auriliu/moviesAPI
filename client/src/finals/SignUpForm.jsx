@@ -1,8 +1,11 @@
-// SignUpForm.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useUser } from "../UserContext";
+
 const SignUpForm = ({ onSwitchToLogin }) => {
+  const { setUser } = useUser();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +17,6 @@ const SignUpForm = ({ onSwitchToLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // handle sign up
     setError("");
     setSuccess("");
 
@@ -31,8 +33,17 @@ const SignUpForm = ({ onSwitchToLogin }) => {
         return;
       }
 
+      const data = await res.json();
+      console.log("data: ");
+      console.log(data);
+      console.log(data.freshUser.name);
+
       setSuccess("Signup successful! Please log in.");
       // log in:
+      localStorage.setItem("user", data.freshUser.name);
+      setUser(data.freshUser.name);
+      // log in:
+
       setName("");
       setEmail("");
       setPassword("");
@@ -69,7 +80,7 @@ const SignUpForm = ({ onSwitchToLogin }) => {
       />
       <button type="submit">sign up</button>
       <p>
-        already have an account?
+        have an account already?
         <span onClick={onSwitchToLogin}> login</span>
       </p>
 
