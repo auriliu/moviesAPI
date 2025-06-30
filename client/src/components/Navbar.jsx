@@ -35,12 +35,6 @@ export default function Navbar() {
           </NavLink>
         </li>
 
-        <li>
-          <NavLink to="/signup" onClick={() => setIsOpen(false)}>
-            signup
-          </NavLink>
-        </li>
-
         {!isLoggedIn ? (
           <li>
             <NavLink to="/login" onClick={() => setIsOpen(false)}>

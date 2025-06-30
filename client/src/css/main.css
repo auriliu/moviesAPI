@@ -298,17 +298,17 @@ form {
   margin-left: 2rem;
 }
 
-input[type="text"] {
+/* input[type="text"] {
   padding: 8px 12px;
   font-size: 16px;
   border: 1px solid #333;
   border-radius: 4px;
-}
-
+} */
+/* 
 input[type="text"]:focus {
   border: 2px solid var(--color-accent-red);
   outline: none;
-}
+} */
 
 button {
   padding: 8px 16px;
@@ -447,3 +447,28 @@ header {
 }
 
 /* movie card next */
+/* AUTH */
+/* AUTH */
+.auth-container {
+  display: flex;
+  justify-content: center;
+}
+
+.login-form,
+.signup-form {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form input,
+.signup-form input {
+  padding: 10px;
+}
+/*  */
+.login-form span,
+.signup-form span {
+  /* text-decoration: underline; */
+  cursor: pointer;
+  color: var(--color-accent-red);
+}

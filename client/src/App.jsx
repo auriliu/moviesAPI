@@ -16,6 +16,7 @@ import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedComponent from "./components/ProtectedComponent";
 import { useEffect, useState } from "react";
+import AuthPage from "./finals/AuthPage.jsx";
 
 function App() {
   const isLoggedIn = false; //contextAPI to store it.
@@ -39,6 +40,8 @@ function App() {
       <Header />
 
       <Routes>
+        <Route path="/login" element={<AuthPage />} />
+
         <Route
           path="/"
           element={<Highlights addMovie={addMovie} removeMovie={removeMovie} />}
@@ -55,9 +58,6 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/search/:id" element={<MovieDetails />} />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
         <Route path="/seen/:id" element={<MovieDetails />} />
 
         <Route path="/queue" element={<MoviesToWatch />} />
@@ -73,7 +73,7 @@ function App() {
         />
       </Routes>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
